@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "504418280321",
+    "project_id": "qlert-58141",
+    "storage_bucket": "qlert-58141.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504418280321:android:f153efe5c2771714d03e80",
+        "android_client_info": {
+          "package_name": "com.example.qlert"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfh4zP8qmBYpMXBqCCoURx3WOVeTeniSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504418280321:android:90c5cb3d160ebd0ed03e80",
+        "android_client_info": {
+          "package_name": "com.example.qlert_console"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfh4zP8qmBYpMXBqCCoURx3WOVeTeniSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
