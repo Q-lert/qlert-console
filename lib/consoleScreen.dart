@@ -69,6 +69,7 @@ class _ConsoleState extends State<Console> {
               );
             } else {
               List<Widget> widgets = [];
+              List<Marker> markers = [];
 
               for (QueryDocumentSnapshot document in _querySnapshot.docs) {
                 Map<String, dynamic> data =
@@ -78,6 +79,22 @@ class _ConsoleState extends State<Console> {
                 GeoPoint location = data!['location'];
                 Timestamp time = data!['time'];
                 // ... (access other variables as needed)
+
+                markers.add(
+                  Marker(
+                    point: LatLng(location.latitude, location.longitude),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.white,
+                      ),
+                      child: Icon(
+                        Icons.car_crash_sharp,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                );
 
                 widgets.add(
                   Padding(
@@ -121,70 +138,75 @@ class _ConsoleState extends State<Console> {
                                   ]),
                               width: double.infinity,
                               height: 150,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage:
-                                        NetworkImage(data['images'][1]),
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        name,
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        'Medical history - ${userData['medicalHistory']}',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                      Text(
-                                          'Time: ${DateFormat.jm().format((time as Timestamp).toDate())}',
-                                          style: TextStyle(color: Colors.grey)),
-                                      SizedBox(
-                                        height: 25,
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            launchUrl(Uri.parse(
-                                                'https://q-lert.github.io/reports/?report=${id}'));
-                                          },
-                                          icon: Icon(Icons.report_rounded)),
-                                      Text(
-                                        'More info',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 12),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      IconButton(
-                                          onPressed: () {
-                                            launchUrl(Uri.parse(
-                                                'https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}'));
-                                          },
-                                          icon: Icon(Icons.map)),
-                                      Text(
-                                        'open in maps',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 12),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage:
+                                          NetworkImage(data['images'][1]),
+                                    ),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          name,
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          'Medical history - ${userData['medicalHistory']}',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                        Text(
+                                            'Time: ${DateFormat.jm().format((time as Timestamp).toDate())}',
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                        SizedBox(
+                                          height: 25,
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              launchUrl(Uri.parse(
+                                                  'https://q-lert.github.io/reports/?report=${id}'));
+                                            },
+                                            icon: Icon(Icons.report_rounded)),
+                                        Text(
+                                          'More info',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 12),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              launchUrl(Uri.parse(
+                                                  'https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}'));
+                                            },
+                                            icon: Icon(Icons.map)),
+                                        Text(
+                                          'open in maps',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           }
@@ -371,7 +393,7 @@ class _ConsoleState extends State<Console> {
                             child: FlutterMap(
                               options: MapOptions(
                                 initialCenter: LatLng(17.434451, 78.445226),
-                                initialZoom: 15,
+                                initialZoom: 10,
                               ),
                               children: [
                                 TileLayer(
@@ -380,22 +402,23 @@ class _ConsoleState extends State<Console> {
                                   userAgentPackageName: 'com.example.app',
                                 ),
                                 MarkerLayer(
-                                  markers: [
-                                    Marker(
-                                      point: LatLng(17.434451, 78.445226),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          color: Colors.white,
-                                        ),
-                                        child: Icon(
-                                          Icons.car_crash_sharp,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                  markers: markers,
+                                  // markers: [
+                                  //   Marker(
+                                  //     point: LatLng(17.434451, 78.445226),
+                                  //     child: Container(
+                                  //       decoration: BoxDecoration(
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(50),
+                                  //         color: Colors.white,
+                                  //       ),
+                                  //       child: Icon(
+                                  //         Icons.car_crash_sharp,
+                                  //         color: Colors.black,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ],
                                 ),
                               ],
                             ),
